@@ -1,0 +1,64 @@
+name: eatery
+description: A new Flutter project.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.5
+  supabase: ^1.9.5
+  yet_another_json_isolate: ^1.1.1
+  flutter_adaptive_scaffold: ^0.1.5
+  go_router: ^9.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.2
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/eatery-logo.png"
+  min_sdk_android: 16
+  remove_alpha_ios: true
+  web:
+    generate: true
+    image_path: "assets/images/eatery-logo.png"
+  windows:
+    generate: true
+    image_path: "assets/images/eatery-logo.png"
+    icon_size: 48
+  macos:
+    generate: true
+    image_path: "assets/images/eatery-logo.png"
+  linux:
+    generate: true
+    image_path: "assets/images/eatery-logo.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/vectors/
+
+  fonts:
+    - family: Satoshi
+      fonts:
+        - asset: fonts/Satoshi-Black.otf
+        - asset: fonts/Satoshi-BlackItalic.otf
+          style: italic
+        - asset: fonts/Satoshi-Bold.otf
+        - asset: fonts/Satoshi-BoldItalic.otf
+        - asset: fonts/Satoshi-Italic.otf
+        - asset: fonts/Satoshi-Light.otf
+        - asset: fonts/Satoshi-LightItalic.otf
+        - asset: fonts/Satoshi-Medium.otf
+        - asset: fonts/Satoshi-MediumItalic.otf
+        - asset: fonts/Satoshi-Regular.otf
