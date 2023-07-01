@@ -130,8 +130,8 @@ class SecondaryButton extends StatelessWidget {
   }
 }
 
-class MizormorOutlinedButton extends StatelessWidget {
-  const MizormorOutlinedButton(
+class EateryOutlinedButton extends StatelessWidget {
+  const EateryOutlinedButton(
       {Key? key,
       this.onPressed,
       this.color,
