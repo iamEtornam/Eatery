@@ -16,6 +16,8 @@ dependencies:
   go_router: ^9.0.0
   bot_toast: ^4.0.4
   zoom_tap_animation: ^1.1.0
+  get_it: ^7.6.0
+  flutter_svg: ^2.0.7
 
 dev_dependencies:
   flutter_test:
