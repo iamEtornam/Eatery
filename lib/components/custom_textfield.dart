@@ -22,6 +22,7 @@ class EateryTextField extends StatelessWidget {
     this.labelFontWeight,
     this.onSubmitted,
     this.inputFormatters,
+    this.isPassword = false,
   }) : super(key: key);
 
   final TextEditingController? textController;
@@ -40,6 +41,7 @@ class EateryTextField extends StatelessWidget {
   final FontWeight? labelFontWeight;
   final int? maxLines;
   final List<TextInputFormatter>? inputFormatters;
+  final bool isPassword;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +62,7 @@ class EateryTextField extends StatelessWidget {
           ),
         },
         TextFormField(
+          obscureText: isPassword,
           controller: textController,
           keyboardType: keyboardType,
           initialValue: initialText,
@@ -89,10 +92,9 @@ class EateryTextField extends StatelessWidget {
               errorStyle: Theme.of(context).inputDecorationTheme.errorStyle,
               suffixIcon: suffixIcons,
               prefixIcon: prefixIcons),
-          cursorColor: Colors.black,
+          cursorColor: EateryColor.secondary,
           style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 fontSize: 15,
-                color: Colors.black,
                 fontWeight: FontWeight.w400,
               ),
           validator: validator,

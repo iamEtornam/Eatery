@@ -150,7 +150,7 @@ ThemeData customDarkTheme(
       bottomNavigationBarTheme:
           const BottomNavigationBarThemeData(unselectedItemColor: Colors.grey),
       inputDecorationTheme: InputDecorationTheme(
-        fillColor: EateryColor.grey2,
+        fillColor: const Color.fromARGB(128, 79, 75, 75),
         filled: true,
         alignLabelWithHint: true,
         hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
@@ -159,14 +159,14 @@ ThemeData customDarkTheme(
         contentPadding: const EdgeInsets.all(15.0),
         floatingLabelBehavior: FloatingLabelBehavior.never,
         focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: .3),
+            borderSide: BorderSide(color: Color.fromARGB(128, 79, 75, 75), width: .3),
             borderRadius: BorderRadius.all(Radius.circular(13))),
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade100, width: .3),
-            borderRadius: const BorderRadius.all(Radius.circular(13))),
-        disabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade100, width: .3),
-            borderRadius: const BorderRadius.all(Radius.circular(13))),
+        enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color.fromARGB(128, 79, 75, 75), width: .3),
+            borderRadius: BorderRadius.all(Radius.circular(13))),
+        disabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color.fromARGB(128, 79, 75, 75), width: .3),
+            borderRadius: BorderRadius.all(Radius.circular(13))),
         errorBorder: OutlineInputBorder(
             borderSide: BorderSide(color: const Color(0xFFB00020).withOpacity(.5), width: .3),
             borderRadius: const BorderRadius.all(Radius.circular(13))),
