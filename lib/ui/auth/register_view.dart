@@ -8,14 +8,14 @@ import 'package:eatery/router.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _RegisterViewState extends State<RegisterView> {
   Widget _child = const SizedBox();
   @override
   Widget build(BuildContext context) {
@@ -32,14 +32,18 @@ class _LoginViewState extends State<LoginView> {
                   fit: BoxFit.cover,
                 ),
               ),
-              const LoginFormWidget(),
+              SizedBox(
+                width: MediaQuery.sizeOf(context).width / 2,
+                height: MediaQuery.sizeOf(context).height,
+                child: const RegisterFormWidget(),
+              ),
             ],
           );
         } else {
           // If screen size is < 480
           _child = const Column(
             children: [
-              LoginFormWidget(),
+              Expanded(child: RegisterFormWidget()),
             ],
           );
         }
@@ -55,22 +59,26 @@ class _LoginViewState extends State<LoginView> {
   }
 }
 
-class LoginFormWidget extends StatefulWidget {
-  const LoginFormWidget({super.key});
+class RegisterFormWidget extends StatefulWidget {
+  const RegisterFormWidget({super.key});
 
   @override
-  State<LoginFormWidget> createState() => _LoginFormWidgetState();
+  State<RegisterFormWidget> createState() => _RegisterFormWidgetState();
 }
 
-class _LoginFormWidgetState extends State<LoginFormWidget> {
+class _RegisterFormWidgetState extends State<RegisterFormWidget> {
   bool isChecked = false;
   final formKey = GlobalKey<FormState>();
   final emailTextEditController = TextEditingController();
+  final nameTextEditController = TextEditingController();
+  final resturantNameTextEditController = TextEditingController();
   final passwordTextEditController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Form(
+    return Scaffold(
+      appBar: AppBar(),
+      body: Form(
           key: formKey,
           child: ListView(
             padding: const EdgeInsets.all(25),
@@ -83,14 +91,38 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               const SizedBox(
                 height: 20,
               ),
-              const Center(child: EateryTitle(text: 'Welcome to Eatery')),
+              const Center(child: EateryTitle(text: 'Create a new account')),
               const SizedBox(
                 height: 17,
               ),
               EateryTextField(
+                textController: nameTextEditController,
+                placeholderText: 'Enter your name',
+                label: 'Full name',
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter a valid name';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              EateryTextField(
+                textController: resturantNameTextEditController,
+                placeholderText: 'Enter your restuarant name',
+                label: 'Restuarant name',
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter a valid Restuarant name';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              EateryTextField(
                 textController: emailTextEditController,
-                placeholderText: 'Enter your email',
                 keyboardType: TextInputType.emailAddress,
+                placeholderText: 'Enter your email',
                 label: 'Email address',
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -113,19 +145,6 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                   return null;
                 },
               ),
-              const SizedBox(height: 10),
-              Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                      onPressed: () => context.pushNamed(RoutesName.passwordReset),
-                      child: const Text(
-                        'Forgot your password? Reset here',
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            decoration: TextDecoration.underline,
-                            decorationColor: EateryColor.main),
-                      ))),
               const SizedBox(
                 height: 25,
               ),
@@ -182,7 +201,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                 height: 25,
               ),
               PrimaryButton(
-                label: 'Login',
+                label: 'Create account',
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
                     context.goNamed(RoutesName.home);
@@ -193,9 +212,9 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                      onPressed: () => context.pushNamed(RoutesName.register),
+                      onPressed: () => context.pushNamed(RoutesName.auth),
                       child: const Text(
-                        'No account? Create one here',
+                        'Already have an account? Login',
                         textAlign: TextAlign.right,
                       ))),
               const SizedBox(height: 20),
