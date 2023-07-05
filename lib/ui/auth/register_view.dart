@@ -71,7 +71,7 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
   final formKey = GlobalKey<FormState>();
   final emailTextEditController = TextEditingController();
   final nameTextEditController = TextEditingController();
-  final resturantNameTextEditController = TextEditingController();
+
   final passwordTextEditController = TextEditingController();
 
   @override
@@ -107,18 +107,7 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
                 },
               ),
               const SizedBox(height: 10),
-              EateryTextField(
-                textController: resturantNameTextEditController,
-                placeholderText: 'Enter your restuarant name',
-                label: 'Restuarant name',
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter a valid Restuarant name';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
+         
               EateryTextField(
                 textController: emailTextEditController,
                 keyboardType: TextInputType.emailAddress,
@@ -204,7 +193,7 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
                 label: 'Create account',
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
-                    context.goNamed(RoutesName.home);
+                    context.goNamed(RoutesName.completeProfile);
                   } else {}
                 },
               ),

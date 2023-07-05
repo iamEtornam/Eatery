@@ -2,7 +2,15 @@ import 'package:supabase/supabase.dart';
 
 abstract class AuthRepository {
   Future loginUser({required String email, required String password});
-  Future otherLoginUser({required Provider provider});
+  Future createUser({
+    required String email,
+    required String password,
+    required String username,
+    required String restaurantName,
+    required String restaurantLocation,
+    required String restaurantLogo,
+    required (double latitude, double logitude) restaurantLatLng,
+  });
 }
 
 class AuthRepositoryImpl extends AuthRepository {
@@ -22,13 +30,28 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future otherLoginUser({required Provider provider}) async {
-    final idToken = '';
-    await supabase.auth.signInWithIdToken(provider: provider, idToken: idToken);
+  Future createUser(
+      {required String email,
+      required String password,
+      required String username,
+      required String restaurantName,
+      required String restaurantLocation,
+      required String restaurantLogo,
+      required (double, double) restaurantLatLng}) async {
+    final AuthResponse res = await supabase.auth.signUp(
+      email: email,
+      password: password,
+      data: {
+        'username': username,
+        'restaurant_name': restaurantName,
+        'restaurant_location': restaurantLocation,
+        'restaurant_logo': restaurantLogo,
+        'restaurant_latlng': '${restaurantLatLng.$1},${restaurantLatLng.$2}'
+      },
+    );
+    final Session? session = res.session;
+    final User? user = res.user;
 
-    final Session? session = supabase.auth.currentSession;
-    final String? oAuthToken = session?.providerToken;
-
-    return session != null || oAuthToken != null;
+     return session != null || user != null;
   }
 }
