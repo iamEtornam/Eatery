@@ -86,7 +86,7 @@ class _PasswordResetFormWidgetState extends State<PasswordResetFormWidget> {
               const SizedBox(
                 height: 20,
               ),
-              const Center(child: EateryTitle(text: 'Welcome to Eatery')),
+              const Center(child: EateryTitle(text: 'Reset your Eatery password')),
               const SizedBox(
                 height: 17,
               ),
@@ -106,7 +106,7 @@ class _PasswordResetFormWidgetState extends State<PasswordResetFormWidget> {
                 height: 25,
               ),
               PrimaryButton(
-                label: 'Login',
+                label: 'Reset',
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
                     context.goNamed(RoutesName.home);

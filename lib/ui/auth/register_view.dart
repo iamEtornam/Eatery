@@ -70,14 +70,13 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
   bool isChecked = false;
   final formKey = GlobalKey<FormState>();
   final emailTextEditController = TextEditingController();
-  final nameTextEditController = TextEditingController();
-
   final passwordTextEditController = TextEditingController();
+  final confirmPasswordTextEditController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(backgroundColor: Theme.of(context).scaffoldBackgroundColor,),
       body: Form(
           key: formKey,
           child: ListView(
@@ -88,26 +87,11 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
                 width: 80,
                 height: 80,
               ),
-              const SizedBox(
-                height: 20,
-              ),
+         
               const Center(child: EateryTitle(text: 'Create a new account')),
               const SizedBox(
                 height: 17,
               ),
-              EateryTextField(
-                textController: nameTextEditController,
-                placeholderText: 'Enter your name',
-                label: 'Full name',
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter a valid name';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-         
               EateryTextField(
                 textController: emailTextEditController,
                 keyboardType: TextInputType.emailAddress,
@@ -130,6 +114,24 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter a valid password';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              EateryTextField(
+                textController: confirmPasswordTextEditController,
+                placeholderText: 'Confirm your password',
+                label: 'Confirm password',
+                isPassword: true,
+                maxLines: 1,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter a valid password';
+                  }
+
+                  if (passwordTextEditController.text != value) {
+                    return 'Passwords does not match!';
                   }
                   return null;
                 },
@@ -192,8 +194,9 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
               PrimaryButton(
                 label: 'Create account',
                 onPressed: () {
-                  if (formKey.currentState!.validate()) {
-                    context.goNamed(RoutesName.completeProfile);
+                  if (formKey.currentState!.validate() && isChecked) {
+
+                    // context.goNamed(RoutesName.completeProfile);
                   } else {}
                 },
               ),

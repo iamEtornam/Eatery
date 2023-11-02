@@ -82,7 +82,7 @@ final GoRouter router = GoRouter(
                       pageBuilder: (BuildContext context, GoRouterState state) {
                         return CustomTransitionPage(
                           key: state.pageKey,
-                          child: const RestuarantProfileView(),
+                          child: const RestaurantProfileView(),
                           transitionsBuilder: (context, animation, secondaryAnimation, child) {
                             // Change the opacity of the screen using a Curve based on the the animation's
                             // value
