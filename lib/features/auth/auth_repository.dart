@@ -5,8 +5,8 @@ import 'package:supabase/supabase.dart';
 
 abstract class AuthRepository {
   Future<User?> loginUser({required String email, required String password});
-  Stream isUserLoggedIn();
-  Future resetPassword({required String email});
+  Stream<bool> isUserLoggedIn();
+  Future<void> resetPassword({required String email});
   Future<User?> createUser({
     required String email,
     required String password,
@@ -18,6 +18,10 @@ abstract class AuthRepository {
       required String restaurantLocation,
       required XFile restaurantLogo,
       required ({double latitude, double longitude}) restaurantLatLng});
+
+  Future<void> logout();
+  Future<AuthResponse> verifyOTP(
+      {required String otp, required String email, required OtpType type});
 }
 
 class AuthRepositoryImpl extends AuthRepository {
@@ -50,7 +54,11 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future resetPassword({required String email}) async {}
+  Future<void> resetPassword({required String email}) async {
+    return await supabase.auth.resetPasswordForEmail(
+      email
+    );
+  }
 
   @override
   Stream<bool> isUserLoggedIn() {
@@ -79,7 +87,7 @@ class AuthRepositoryImpl extends AuthRepository {
         bytes: bytes, extension: ex, mimeType: restaurantLogo.mimeType!);
 
     final body = {
-      'id': user.id,
+      'user_id': user.id,
       'username': username,
       'restaurant_name': restaurantName,
       'restaurant_location': restaurantLocation,
@@ -110,6 +118,27 @@ class AuthRepositoryImpl extends AuthRepository {
           .from('logos')
           .createSignedUrl(filePath, 60 * 60 * 24 * 365 * 10);
       return imageUrlResponse;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> logout() {
+    try {
+      return supabase.auth.signOut();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<AuthResponse> verifyOTP(
+      {required String otp,
+      required String email,
+      required OtpType type}) async {
+    try {
+      return supabase.auth.verifyOTP(token: otp, type: type, email: email);
     } catch (e) {
       rethrow;
     }
