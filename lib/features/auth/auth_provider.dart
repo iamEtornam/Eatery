@@ -94,7 +94,7 @@ class AuthProvider extends ChangeNotifier {
       );
       if (createdUser != null) {
         setUser = createdUser;
-        setMessage = 'Registration successful';
+        setMessage = 'Registration successful. Verify email address';
       } else {
         setMessage = 'Registration failed';
         setUser = null;

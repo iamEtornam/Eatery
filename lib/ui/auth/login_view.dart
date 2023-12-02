@@ -3,9 +3,14 @@ import 'package:eatery/components/custom_color.dart';
 import 'package:eatery/components/custom_text.dart';
 import 'package:eatery/components/custom_textfield.dart';
 import 'package:eatery/components/squared_checkbox.dart';
+import 'package:eatery/features/auth/auth_provider.dart';
+import 'package:eatery/features/auth/auth_repository.dart';
 import 'package:eatery/resources/resources.dart';
 import 'package:eatery/router.dart';
+import 'package:eatery/services/injection_container.dart';
+import 'package:eatery/utils/util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginView extends StatefulWidget {
@@ -37,10 +42,12 @@ class _LoginViewState extends State<LoginView> {
           );
         } else {
           // If screen size is < 480
-          _child = const Column(
-            children: [
-              LoginFormWidget(),
-            ],
+          _child = const SafeArea(
+            child: Column(
+              children: [
+                LoginFormWidget(),
+              ],
+            ),
           );
         }
         return AnimatedSwitcher(
@@ -55,20 +62,24 @@ class _LoginViewState extends State<LoginView> {
   }
 }
 
-class LoginFormWidget extends StatefulWidget {
-  const LoginFormWidget({super.key});
+final _authRepository = getIt.get<AuthRepository>();
+final _authProvider = ChangeNotifierProvider<AuthProvider>(
+    (ref) => AuthProvider(_authRepository));
 
+class LoginFormWidget extends ConsumerStatefulWidget {
+  const LoginFormWidget({super.key});
   @override
-  State<LoginFormWidget> createState() => _LoginFormWidgetState();
+  ConsumerState<LoginFormWidget> createState() => _LoginFormWidgetState();
 }
 
-class _LoginFormWidgetState extends State<LoginFormWidget> {
-  bool isChecked = false;
+class _LoginFormWidgetState extends ConsumerState<LoginFormWidget> {
+  final isCheckedListner = ValueNotifier(false);
   final formKey = GlobalKey<FormState>();
   final emailTextEditController = TextEditingController();
   final passwordTextEditController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final authProvider = ref.read(_authProvider);
     return Expanded(
       child: Form(
           key: formKey,
@@ -117,7 +128,8 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                      onPressed: () => context.pushNamed(RoutesName.passwordReset),
+                      onPressed: () =>
+                          context.pushNamed(RoutesName.passwordReset),
                       child: const Text(
                         'Forgot your password? Reset here',
                         textAlign: TextAlign.right,
@@ -131,28 +143,39 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               ),
               Row(
                 children: [
-                  SquaredCheckbox(
-                    isChecked: isChecked,
-                    activeColor: EateryColor.secondary,
-                    onTap: (x) => setState(() => isChecked = x),
-                  ),
+                  ValueListenableBuilder<bool>(
+                      valueListenable: isCheckedListner,
+                      builder: (context, isChecked, child) {
+                        return SquaredCheckbox(
+                            isChecked: isChecked,
+                            activeColor: EateryColor.secondary,
+                            onTap: (x) => isCheckedListner.value = x);
+                      }),
                   const SizedBox(width: 10),
                   Expanded(
                     child: RichText(
                         text: TextSpan(
                             text: 'By continuing, you’re agreeing to our ',
-                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                fontSize: 14, fontWeight: FontWeight.w400, fontFamily: 'Satoshi'),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: 'Satoshi'),
                             children: [
                           WidgetSpan(
                               child: InkWell(
                             onTap: () {},
                             child: Text(
                               'Terms & conditions',
-                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: EateryColor.main),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: EateryColor.main),
                             ),
                           )),
                           TextSpan(
@@ -160,17 +183,21 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge!
-                                .copyWith(fontSize: 14, fontWeight: FontWeight.w400),
+                                .copyWith(
+                                    fontSize: 14, fontWeight: FontWeight.w400),
                           ),
                           WidgetSpan(
                             child: InkWell(
                               onTap: () {},
                               child: Text(
                                 'Privacy Policy.',
-                                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: EateryColor.main),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: EateryColor.main),
                               ),
                             ),
                           )
@@ -183,10 +210,37 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               ),
               PrimaryButton(
                 label: 'Login',
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
-                    context.goNamed(RoutesName.home);
-                  } else {}
+                onPressed: () async {
+                  if (formKey.currentState!.validate() &&
+                      isCheckedListner.value) {
+                    await authProvider.login(
+                        email: emailTextEditController.text,
+                        password: passwordTextEditController.text);
+                    if (!mounted) return;
+                    if (authProvider.user != null) {
+                      showAlert(context,
+                          message: authProvider.message!,
+                          alertType: ToastificationType.success);
+
+                      context.goNamed(RoutesName.home);
+                    } else {
+                      if (authProvider.message == 'Email not confirmed') {
+                        context.goNamed(RoutesName.otp,queryParameters: {
+                          'email': emailTextEditController.text
+                        });
+                      }
+                      showAlert(context,
+                          message:
+                              authProvider.message ?? 'Something went wrong',
+                          alertType: ToastificationType.error);
+                    }
+                  } else if (!isCheckedListner.value) {
+                    showAlert(context,
+                        message: 'Please accept terms and conditions',
+                        alertType: ToastificationType.warning);
+                  } else {
+                    showAlert(context, message: 'Check all the fields');
+                  }
                 },
               ),
               const SizedBox(height: 20),

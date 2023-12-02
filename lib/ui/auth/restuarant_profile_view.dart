@@ -41,11 +41,13 @@ class _RestaurantProfileViewState extends State<RestaurantProfileView> {
           );
         } else {
           // If screen size is < 480
-          _child = const Column(
-            children: [
-              RestaurantLogo(),
-              BasicInfo(),
-            ],
+          _child = const SafeArea(
+            child: Column(
+              children: [
+                RestaurantLogo(),
+                BasicInfo(),
+              ],
+            ),
           );
         }
         return AnimatedSwitcher(
@@ -176,19 +178,24 @@ class _RestaurantLogoState extends State<RestaurantLogo> {
                           builder: (context) {
                             return CustomBottomsheet(
                                 title: 'Options',
-                                onCloseAction: () => Navigator.of(context).pop(),
+                                onCloseAction: () =>
+                                    Navigator.of(context).pop(),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     ListTile(
-                                      onTap: () => Navigator.of(context).pop(ImageSource.camera),
+                                      onTap: () => Navigator.of(context)
+                                          .pop(ImageSource.camera),
                                       contentPadding: EdgeInsets.zero,
                                       leading: SvgPicture.asset(
                                         Vectors.camera,
                                       ),
                                       title: Text(
                                         'Camera',
-                                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .copyWith(
                                               fontWeight: FontWeight.w400,
                                               fontSize: 15,
                                             ),
@@ -196,14 +203,18 @@ class _RestaurantLogoState extends State<RestaurantLogo> {
                                     ),
                                     const Divider(),
                                     ListTile(
-                                      onTap: () => Navigator.of(context).pop(ImageSource.gallery),
+                                      onTap: () => Navigator.of(context)
+                                          .pop(ImageSource.gallery),
                                       contentPadding: EdgeInsets.zero,
                                       leading: SvgPicture.asset(
                                         Vectors.gallery,
                                       ),
                                       title: Text(
                                         'Gallery',
-                                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge!
+                                            .copyWith(
                                               fontWeight: FontWeight.w400,
                                               fontSize: 15,
                                             ),
@@ -214,7 +225,8 @@ class _RestaurantLogoState extends State<RestaurantLogo> {
                           });
 
                       if (res == null) return;
-                      final xFile = await ImagePicker().pickImage(source: res, imageQuality: 60);
+                      final xFile = await ImagePicker()
+                          .pickImage(source: res, imageQuality: 60);
                       if (xFile == null) return;
                       if (!mounted) return;
 

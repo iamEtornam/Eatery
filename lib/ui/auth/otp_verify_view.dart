@@ -10,22 +10,21 @@ import 'package:eatery/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase/supabase.dart';
 
-class PasswordResetView extends StatefulWidget {
-  const PasswordResetView({super.key});
+class OptVerifyView extends StatelessWidget {
+  const OptVerifyView({super.key, required this.email});
 
-  @override
-  State<PasswordResetView> createState() => _PasswordResetViewState();
-}
+  final String email;
 
-class _PasswordResetViewState extends State<PasswordResetView> {
-  Widget _child = const SizedBox();
   @override
   Widget build(BuildContext context) {
+    Widget child = const SizedBox();
+
     return Scaffold(
       body: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth >= 480) {
-          _child = Row(
+          child = Row(
             children: [
               SizedBox(
                 width: MediaQuery.sizeOf(context).width / 2,
@@ -38,16 +37,22 @@ class _PasswordResetViewState extends State<PasswordResetView> {
               SizedBox(
                 width: MediaQuery.sizeOf(context).width / 2,
                 height: MediaQuery.sizeOf(context).height,
-                child: const PasswordResetFormWidget(),
+                child: OptVerifyFormWidget(
+                  email: email,
+                ),
               ),
             ],
           );
         } else {
           // If screen size is < 480
-          _child = const SafeArea(
+          child = SafeArea(
             child: Column(
               children: [
-                Expanded(child: PasswordResetFormWidget()),
+                Expanded(
+                  child: OptVerifyFormWidget(
+                    email: email,
+                  ),
+                ),
               ],
             ),
           );
@@ -56,7 +61,7 @@ class _PasswordResetViewState extends State<PasswordResetView> {
           duration: const Duration(milliseconds: 800),
           switchInCurve: Curves.easeIn,
           switchOutCurve: Curves.easeInOutExpo,
-          child: _child,
+          child: child,
         );
         // if the screen width >= 480 i.e Wide Screen
       }),
@@ -68,18 +73,19 @@ final _authRepository = getIt.get<AuthRepository>();
 final _authProvider = ChangeNotifierProvider<AuthProvider>(
     (ref) => AuthProvider(_authRepository));
 
-class PasswordResetFormWidget extends ConsumerStatefulWidget {
-  const PasswordResetFormWidget({super.key});
+class OptVerifyFormWidget extends ConsumerStatefulWidget {
+  const OptVerifyFormWidget({super.key, required this.email});
+
+  final String email;
 
   @override
-  ConsumerState<PasswordResetFormWidget> createState() =>
-      _PasswordResetFormWidgetState();
+  ConsumerState<OptVerifyFormWidget> createState() =>
+      _OptVerifyFormWidgetState();
 }
 
-class _PasswordResetFormWidgetState
-    extends ConsumerState<PasswordResetFormWidget> {
+class _OptVerifyFormWidgetState extends ConsumerState<OptVerifyFormWidget> {
   final formKey = GlobalKey<FormState>();
-  final emailTextEditController = TextEditingController();
+  final otpTextEditController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -100,18 +106,18 @@ class _PasswordResetFormWidgetState
                 height: 20,
               ),
               const Center(
-                  child: EateryTitle(text: 'Reset your Eatery password')),
+                  child: EateryTitle(text: 'Enter OTP sent to your email')),
               const SizedBox(
                 height: 17,
               ),
               EateryTextField(
-                textController: emailTextEditController,
-                placeholderText: 'Enter your email',
-                keyboardType: TextInputType.emailAddress,
-                label: 'Email address',
+                textController: otpTextEditController,
+                placeholderText: 'Enter OTP',
+                keyboardType: TextInputType.text,
+                label: 'OTP sent to your email',
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter a valid email';
+                    return 'Please enter a valid OTP';
                   }
                   return null;
                 },
@@ -120,21 +126,29 @@ class _PasswordResetFormWidgetState
                 height: 25,
               ),
               PrimaryButton(
-                label: 'Reset',
+                label: 'Verify',
                 onPressed: () async {
                   if (formKey.currentState!.validate()) {
-                    await authProvider.forgotPassword(
-                        email: emailTextEditController.text);
+                    await authProvider.verifyOTP(
+                        email: widget.email,
+                        otp: otpTextEditController.text.trim(),
+                        type: OtpType.signup);
                     if (!mounted) return;
+                    if (authProvider.user != null) {
+                      showAlert(context,
+                          message: authProvider.message!,
+                          alertType: ToastificationType.success);
 
-                    showAlert(context,
-                        message: authProvider.message!,
-                        alertType: ToastificationType.success);
-
-                    context.goNamed(RoutesName.auth);
+                      context.goNamed(RoutesName.home);
+                    } else {
+                      showAlert(context,
+                          message:
+                              authProvider.message ?? 'Something went wrong',
+                          alertType: ToastificationType.error);
+                    }
                   } else {
                     showAlert(context,
-                        message: 'Check the email address',
+                        message: 'Check the OTP',
                         alertType: ToastificationType.warning);
                   }
                 },
@@ -142,7 +156,6 @@ class _PasswordResetFormWidgetState
               const SizedBox(height: 20),
             ],
           )),
-    
     );
   }
 }
