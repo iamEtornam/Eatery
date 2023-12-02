@@ -17,7 +17,7 @@ class App extends StatelessWidget {
       builder: BotToastInit(),
       theme: customLightTheme(context),
       darkTheme: customDarkTheme(context),
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
     );
   }
 }

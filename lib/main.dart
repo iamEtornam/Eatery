@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase/supabase.dart';
 
+import 'config/config.dart';
+
 void main() {
   final supabase = SupabaseClient(
-    'https://xyzcompany.supabase.co',
-    'public-anon-key',
+    Config.supabaseUrl,
+    Config.supabaseKey,
   );
   runApp(const ProviderScope(child: App()));
   initFeatures(supabase);
