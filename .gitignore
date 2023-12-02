@@ -45,3 +45,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 database/supabase/db_pass.txt
+lib/config/dev_config.dart
+lib/config/prod_config.dart
