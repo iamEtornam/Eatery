@@ -27,15 +27,14 @@ class _SplashViewState extends ConsumerState<SplashView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final authProvider = ref.read(_authProvider);
 
-      authProvider.isUserLoggedIn().listen((event) {
-        if (event) {
-          context.goNamed(RoutesName.home);
-        } else {
-          Future.delayed(const Duration(seconds: 3), () {
-            context.pushNamed(RoutesName.auth);
-          });
-        }
-      });
+      final state = authProvider.userLoginState();
+      if (state) {
+        context.goNamed(RoutesName.home);
+      } else {
+        Future.delayed(const Duration(seconds: 3), () {
+          context.pushNamed(RoutesName.auth);
+        });
+      }
     });
   }
 
