@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 class EateryTextField extends StatelessWidget {
   const EateryTextField({
-    Key? key,
+    super.key,
     this.textController,
     this.validator,
     this.label,
@@ -23,7 +23,7 @@ class EateryTextField extends StatelessWidget {
     this.onSubmitted,
     this.inputFormatters,
     this.isPassword = false,
-  }) : super(key: key);
+  });
 
   final TextEditingController? textController;
   final String? Function(String? value)? validator;
@@ -52,10 +52,8 @@ class EateryTextField extends StatelessWidget {
         if (label != null) ...{
           EaterySubTitle(
             text: label!,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium!
-                .copyWith(fontSize: 15, fontWeight: labelFontWeight ?? FontWeight.w400),
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                fontSize: 15, fontWeight: labelFontWeight ?? FontWeight.w400),
           ),
           const SizedBox(
             height: 8,
@@ -82,11 +80,15 @@ class EateryTextField extends StatelessWidget {
               hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
               contentPadding: const EdgeInsets.all(15.0),
               floatingLabelBehavior: FloatingLabelBehavior.never,
-              focusedBorder: Theme.of(context).inputDecorationTheme.focusedBorder,
-              enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-              disabledBorder: Theme.of(context).inputDecorationTheme.disabledBorder,
+              focusedBorder:
+                  Theme.of(context).inputDecorationTheme.focusedBorder,
+              enabledBorder:
+                  Theme.of(context).inputDecorationTheme.enabledBorder,
+              disabledBorder:
+                  Theme.of(context).inputDecorationTheme.disabledBorder,
               errorBorder: Theme.of(context).inputDecorationTheme.errorBorder,
-              focusedErrorBorder: Theme.of(context).inputDecorationTheme.focusedErrorBorder,
+              focusedErrorBorder:
+                  Theme.of(context).inputDecorationTheme.focusedErrorBorder,
               fillColor: Theme.of(context).inputDecorationTheme.fillColor,
               filled: true,
               errorStyle: Theme.of(context).inputDecorationTheme.errorStyle,
@@ -108,7 +110,8 @@ class EateryTextField extends StatelessWidget {
 
 class UpperCaseTextFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     return TextEditingValue(
       text: capitalize(newValue.text),
       selection: newValue.selection,

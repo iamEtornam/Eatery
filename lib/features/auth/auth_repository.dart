@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:image_picker/image_picker.dart';
@@ -18,6 +19,8 @@ abstract class AuthRepository {
       required String restaurantLocation,
       required XFile restaurantLogo,
       required ({double latitude, double longitude}) restaurantLatLng});
+
+  Future getRestaurant();
 
   Future<void> logout();
   Future<AuthResponse> verifyOTP(
@@ -55,9 +58,7 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Future<void> resetPassword({required String email}) async {
-    return await supabase.auth.resetPasswordForEmail(
-      email
-    );
+    return await supabase.auth.resetPasswordForEmail(email);
   }
 
   @override
@@ -79,27 +80,34 @@ class AuthRepositoryImpl extends AuthRepository {
       required String restaurantLocation,
       required XFile restaurantLogo,
       required ({double latitude, double longitude}) restaurantLatLng}) async {
-    final user = supabase.auth.currentUser;
-    if (user == null) return false;
-    final bytes = await restaurantLogo.readAsBytes();
-    final ex = restaurantLogo.path.split('.').last;
-    final logoUrl = await uploadLogo(
-        bytes: bytes, extension: ex, mimeType: restaurantLogo.mimeType!);
+    try {
+      final user = supabase.auth.currentUser;
+      if (user == null) return false;
+      final bytes = await restaurantLogo.readAsBytes();
+      final ex = restaurantLogo.path.split('.').last;
+      final logoUrl = await uploadLogo(
+          bytes: bytes,
+          extension: ex,
+          mimeType: restaurantLogo.mimeType ?? 'image/jpeg');
 
-    final body = {
-      'user_id': user.id,
-      'username': username,
-      'restaurant_name': restaurantName,
-      'restaurant_location': restaurantLocation,
-      'restaurant_logo': logoUrl,
-      'restaurant_lat': restaurantLatLng.latitude,
-      'restaurant_lng': restaurantLatLng.longitude,
-      'updated_at': DateTime.now().toIso8601String(),
-      'created_at': DateTime.now().toIso8601String(),
-    };
+      final body = {
+        'user_id': user.id,
+        'username': username,
+        'restaurant_name': restaurantName,
+        'restaurant_location': restaurantLocation,
+        'restaurant_logo': logoUrl,
+        'restaurant_lat': restaurantLatLng.latitude,
+        'restaurant_lng': restaurantLatLng.longitude,
+        'updated_at': DateTime.now().toIso8601String(),
+        'created_at': DateTime.now().toIso8601String(),
+      };
 
-    final res = await supabase.from('restaurants').insert(body).select();
-    return res != null;
+      final res = await supabase.from('restaurants').insert(body).select();
+      return res != null;
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
   }
 
   Future<String> uploadLogo(
@@ -139,6 +147,20 @@ class AuthRepositoryImpl extends AuthRepository {
       required OtpType type}) async {
     try {
       return supabase.auth.verifyOTP(token: otp, type: type, email: email);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List> getRestaurant() async {
+    try {
+      final res = await supabase
+          .from('restaurants')
+          .select()
+          .match({'user_id': supabase.auth.currentUser!.id});
+      print(res);
+      return res;
     } catch (e) {
       rethrow;
     }

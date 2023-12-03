@@ -73,10 +73,11 @@ class LoginFormWidget extends ConsumerStatefulWidget {
 }
 
 class _LoginFormWidgetState extends ConsumerState<LoginFormWidget> {
-  final isCheckedListner = ValueNotifier(false);
+  final isCheckedListner = ValueNotifier(true);
   final formKey = GlobalKey<FormState>();
-  final emailTextEditController = TextEditingController();
-  final passwordTextEditController = TextEditingController();
+  final emailTextEditController =
+      TextEditingController(text: 'sunumacbright@gmail.com');
+  final passwordTextEditController = TextEditingController(text: '1234567890');
   @override
   Widget build(BuildContext context) {
     final authProvider = ref.read(_authProvider);
@@ -222,10 +223,17 @@ class _LoginFormWidgetState extends ConsumerState<LoginFormWidget> {
                           message: authProvider.message!,
                           alertType: ToastificationType.success);
 
-                      context.goNamed(RoutesName.home);
+                      final restaurant = await authProvider.getRestaurant();
+                      if (!mounted) return;
+
+                      if (restaurant.isNotEmpty) {
+                        context.goNamed(RoutesName.home);
+                      } else {
+                        context.goNamed(RoutesName.completeProfile);
+                      }
                     } else {
                       if (authProvider.message == 'Email not confirmed') {
-                        context.goNamed(RoutesName.otp,queryParameters: {
+                        context.goNamed(RoutesName.otp, queryParameters: {
                           'email': emailTextEditController.text
                         });
                       }

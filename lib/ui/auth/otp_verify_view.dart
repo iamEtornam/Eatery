@@ -139,7 +139,7 @@ class _OptVerifyFormWidgetState extends ConsumerState<OptVerifyFormWidget> {
                           message: authProvider.message!,
                           alertType: ToastificationType.success);
 
-                      context.goNamed(RoutesName.home);
+                      context.goNamed(RoutesName.completeProfile);
                     } else {
                       showAlert(context,
                           message:

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:eatery/features/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:supabase/supabase.dart';
 
 class AuthProvider extends ChangeNotifier {
@@ -121,4 +122,42 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Stream<bool> isUserLoggedIn() => authRepository.isUserLoggedIn();
+
+  Future<bool> updateRestaurantProfile(
+      {required String username,
+      required String restaurantName,
+      required String restaurantLocation,
+      required XFile restaurantLogo,
+      required ({double latitude, double longitude}) restaurantLatLng}) async {
+    try {
+      final saved = await authRepository.updateRestaurantProfile(
+        restaurantLatLng: restaurantLatLng,
+        restaurantLocation: restaurantLocation,
+        restaurantName: restaurantName,
+        username: username,
+        restaurantLogo: restaurantLogo,
+      );
+      if (saved) {
+        setMessage = 'Profile updated';
+      } else {
+        setMessage = 'Failed to update profile';
+      }
+      return saved;
+    } catch (e) {
+      setUser = null;
+      setMessage = e.toString();
+      log(e.toString(), name: 'Exception');
+      return false;
+    }
+  }
+
+  Future<dynamic> getRestaurant() async {
+    try {
+      return await authRepository.getRestaurant();
+    } catch (e) {
+      log(e.toString(), name: 'Exception');
+      setUser = null;
+      setMessage = e.toString();
+    }
+  }
 }
