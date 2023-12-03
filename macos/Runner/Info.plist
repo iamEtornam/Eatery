@@ -2,6 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Eatery app requires access to your Camera in order for you to capture your Picture for User profile. It is secure and private.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Eatery would like to use your current location for directions and estimation of your trip times. It is secure and private.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Eatery would like to use your current location for directions and estimation of your trip times. It is secure and private.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Eatery would like to use your current location for directions and estimation of your trip times. It is secure and private.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Eatery requires access to your Library in order for you to select a Picture for User Profile. It is secure and private.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
