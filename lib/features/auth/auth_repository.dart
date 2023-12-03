@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:typed_data';
 
+import 'package:eatery/models/restaurant.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase/supabase.dart';
 
@@ -20,11 +21,12 @@ abstract class AuthRepository {
       required XFile restaurantLogo,
       required ({double latitude, double longitude}) restaurantLatLng});
 
-  Future getRestaurant();
+  Future<List<Restaurant>> getRestaurant();
 
   Future<void> logout();
   Future<AuthResponse> verifyOTP(
       {required String otp, required String email, required OtpType type});
+  bool userLoginState();
 }
 
 class AuthRepositoryImpl extends AuthRepository {
@@ -32,12 +34,10 @@ class AuthRepositoryImpl extends AuthRepository {
 
   AuthRepositoryImpl(this.supabase);
 
-  Stream<bool> userState = Stream.value(false);
-
   @override
   Future<User?> loginUser(
       {required String email, required String password}) async {
-    final AuthResponse res = await supabase.auth.signInWithPassword(
+    final res = await supabase.auth.signInWithPassword(
       email: email,
       password: password,
     );
@@ -62,15 +62,23 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Stream<bool> isUserLoggedIn() {
+  Stream<bool> isUserLoggedIn() async* {
+    bool userState = false;
     supabase.auth.onAuthStateChange.listen((data) {
+      log(data.toString(), name: 'isUserLoggedIn');
       final AuthChangeEvent event = data.event;
-      if (event == AuthChangeEvent.signedIn) {
-        // handle signIn
-        userState = Stream.value(true);
+      if ([
+        AuthChangeEvent.signedOut,
+        AuthChangeEvent.userDeleted,
+        AuthChangeEvent.passwordRecovery,
+        AuthChangeEvent.mfaChallengeVerified
+      ].contains(event)) {
+        userState = false;
+      } else {
+        userState = true;
       }
     });
-    return userState;
+    yield userState;
   }
 
   @override
@@ -115,17 +123,20 @@ class AuthRepositoryImpl extends AuthRepository {
       required String extension,
       required String mimeType}) async {
     try {
-      final fileName = '${DateTime.now().toIso8601String()}.$extension';
-      final filePath = fileName;
-      await supabase.storage.from('avatars').uploadBinary(
+      log(supabase.auth.currentSession?.accessToken ?? 'no data');
+      final userId = supabase.auth.currentUser?.id;
+
+      final filePath = '/$userId/logo';
+      await supabase.storage.from('logos').uploadBinary(
             filePath,
             bytes,
-            fileOptions: FileOptions(contentType: mimeType),
+            fileOptions: FileOptions(
+                contentType: mimeType, cacheControl: '3600', upsert: true),
           );
-      final imageUrlResponse = await supabase.storage
-          .from('logos')
-          .createSignedUrl(filePath, 60 * 60 * 24 * 365 * 10);
-      return imageUrlResponse;
+
+      final String publicUrl =
+          supabase.storage.from('logos').getPublicUrl(filePath);
+      return publicUrl;
     } catch (e) {
       rethrow;
     }
@@ -153,14 +164,23 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<List> getRestaurant() async {
+  Future<List<Restaurant>> getRestaurant() async {
     try {
       final res = await supabase
           .from('restaurants')
           .select()
           .match({'user_id': supabase.auth.currentUser!.id});
-      print(res);
-      return res;
+      return res.map((e) => Restaurant.fromJson(e)).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  bool userLoginState() {
+    try {
+      final user = supabase.auth.currentUser;
+      return user != null;
     } catch (e) {
       rethrow;
     }
