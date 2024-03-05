@@ -155,12 +155,12 @@ class AuthProvider extends ChangeNotifier {
 
   Future<List<Restaurant>> getRestaurant() async {
     try {
-      return await authRepository.getRestaurant();
+      return authRepository.getRestaurant();
     } catch (e) {
       log(e.toString(), name: 'Exception');
       setUser = null;
       setMessage = e.toString();
-      return [];
+      return <Restaurant>[];
     }
   }
 }

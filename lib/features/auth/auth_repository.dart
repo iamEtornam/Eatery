@@ -166,12 +166,13 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<List<Restaurant>> getRestaurant() async {
     try {
-      final res = await supabase
+      final List<dynamic> res = await supabase
           .from('restaurants')
           .select()
           .match({'user_id': supabase.auth.currentUser!.id});
-      return res.map((e) => Restaurant.fromJson(e)).toList();
+      return res.map((json) => Restaurant.fromJson(json)).toList();
     } catch (e) {
+      log(e.toString(), name: 'getRestaurant');
       rethrow;
     }
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class EateryTitle extends StatelessWidget {
-  const EateryTitle({Key? key, required this.text, this.style}) : super(key: key);
+  const EateryTitle({super.key, required this.text, this.style});
 
   final String text;
   final TextStyle? style;
@@ -20,7 +20,7 @@ class EateryTitle extends StatelessWidget {
 }
 
 class EaterySubTitle extends StatelessWidget {
-  const EaterySubTitle({Key? key, required this.text, this.style}) : super(key: key);
+  const EaterySubTitle({super.key, required this.text, this.style});
 
   final String text;
   final TextStyle? style;

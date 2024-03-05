@@ -10,12 +10,14 @@ ThemeData customLightTheme(
       useMaterial3: true,
       scaffoldBackgroundColor: const Color(0xFFFFFFFF),
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      textSelectionTheme: const TextSelectionThemeData(cursorColor: Colors.black),
+      textSelectionTheme:
+          const TextSelectionThemeData(cursorColor: Colors.black),
       platform: defaultTargetPlatform,
       highlightColor: Colors.black.withOpacity(.5),
       primaryColor: Colors.black,
       indicatorColor: Colors.black,
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: Colors.black),
+      floatingActionButtonTheme:
+          const FloatingActionButtonThemeData(backgroundColor: Colors.black),
       unselectedWidgetColor: Colors.grey,
       brightness: Brightness.light,
       fontFamily: 'Satoshi',
@@ -41,19 +43,25 @@ ThemeData customLightTheme(
             borderSide: BorderSide(color: Colors.grey.shade100, width: .3),
             borderRadius: const BorderRadius.all(Radius.circular(13))),
         errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: const Color(0xFFB00020).withOpacity(.5), width: .3),
+            borderSide: BorderSide(
+                color: const Color(0xFFB00020).withOpacity(.5), width: .3),
             borderRadius: const BorderRadius.all(Radius.circular(13))),
         focusedErrorBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Color(0xFFB00020), width: .3),
             borderRadius: BorderRadius.all(Radius.circular(13))),
         labelStyle: Theme.of(context).textTheme.bodyLarge,
-        errorStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: fromHex('#B00020')),
+        errorStyle: Theme.of(context)
+            .textTheme
+            .bodyMedium!
+            .copyWith(color: fromHex('#B00020')),
       ),
       iconTheme: const IconThemeData(color: Colors.black),
       tabBarTheme: TabBarTheme(
         unselectedLabelColor: Colors.black.withOpacity(.5),
       ),
-      textTheme: Typography.material2018(platform: defaultTargetPlatform).white.copyWith(
+      textTheme: Typography.material2018(platform: defaultTargetPlatform)
+          .white
+          .copyWith(
             bodyLarge: const TextStyle(color: Colors.black),
             bodyMedium: const TextStyle(color: Colors.black),
             bodySmall: const TextStyle(
@@ -87,7 +95,8 @@ ThemeData customLightTheme(
           )),
       colorScheme: EateryColor.lightColorScheme,
       checkboxTheme: CheckboxThemeData(
-        fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+        fillColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
           if (states.contains(MaterialState.disabled)) {
             return null;
           }
@@ -98,7 +107,8 @@ ThemeData customLightTheme(
         }),
       ),
       radioTheme: RadioThemeData(
-        fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+        fillColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
           if (states.contains(MaterialState.disabled)) {
             return null;
           }
@@ -109,7 +119,8 @@ ThemeData customLightTheme(
         }),
       ),
       switchTheme: SwitchThemeData(
-        thumbColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+        thumbColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
           if (states.contains(MaterialState.disabled)) {
             return null;
           }
@@ -118,7 +129,8 @@ ThemeData customLightTheme(
           }
           return null;
         }),
-        trackColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+        trackColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
           if (states.contains(MaterialState.disabled)) {
             return null;
           }
@@ -137,12 +149,14 @@ ThemeData customDarkTheme(
       useMaterial3: true,
       scaffoldBackgroundColor: const Color(0x00000000),
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      textSelectionTheme: const TextSelectionThemeData(cursorColor: Colors.white),
+      textSelectionTheme:
+          const TextSelectionThemeData(cursorColor: Colors.white),
       platform: defaultTargetPlatform,
       highlightColor: Colors.white.withOpacity(.5),
       primaryColor: Colors.white,
       indicatorColor: Colors.white,
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: Colors.white),
+      floatingActionButtonTheme:
+          const FloatingActionButtonThemeData(backgroundColor: Colors.white),
       unselectedWidgetColor: Colors.grey,
       brightness: Brightness.dark,
       fontFamily: 'Satoshi',
@@ -159,28 +173,37 @@ ThemeData customDarkTheme(
         contentPadding: const EdgeInsets.all(15.0),
         floatingLabelBehavior: FloatingLabelBehavior.never,
         focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Color.fromARGB(128, 79, 75, 75), width: .3),
+            borderSide:
+                BorderSide(color: Color.fromARGB(128, 79, 75, 75), width: .3),
             borderRadius: BorderRadius.all(Radius.circular(13))),
         enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Color.fromARGB(128, 79, 75, 75), width: .3),
+            borderSide:
+                BorderSide(color: Color.fromARGB(128, 79, 75, 75), width: .3),
             borderRadius: BorderRadius.all(Radius.circular(13))),
         disabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Color.fromARGB(128, 79, 75, 75), width: .3),
+            borderSide:
+                BorderSide(color: Color.fromARGB(128, 79, 75, 75), width: .3),
             borderRadius: BorderRadius.all(Radius.circular(13))),
         errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: const Color(0xFFB00020).withOpacity(.5), width: .3),
+            borderSide: BorderSide(
+                color: const Color(0xFFB00020).withOpacity(.5), width: .3),
             borderRadius: const BorderRadius.all(Radius.circular(13))),
         focusedErrorBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Color(0xFFB00020), width: .3),
             borderRadius: BorderRadius.all(Radius.circular(13))),
         labelStyle: Theme.of(context).textTheme.bodyLarge,
-        errorStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: fromHex('#B00020')),
+        errorStyle: Theme.of(context)
+            .textTheme
+            .bodyMedium!
+            .copyWith(color: fromHex('#B00020')),
       ),
       iconTheme: const IconThemeData(color: Colors.white),
       tabBarTheme: TabBarTheme(
         unselectedLabelColor: Colors.white.withOpacity(.5),
       ),
-      textTheme: Typography.material2018(platform: defaultTargetPlatform).white.copyWith(
+      textTheme: Typography.material2018(platform: defaultTargetPlatform)
+          .white
+          .copyWith(
             bodyLarge: const TextStyle(color: Colors.white),
             bodyMedium: const TextStyle(color: Colors.white),
             bodySmall: const TextStyle(
@@ -212,5 +235,6 @@ ThemeData customDarkTheme(
             color: Colors.white,
             fontSize: 20,
           )),
-      colorScheme: EateryColor.darkColorScheme.copyWith(error: fromHex('#B00020')));
+      colorScheme:
+          EateryColor.darkColorScheme.copyWith(error: fromHex('#B00020')));
 }

@@ -4,7 +4,7 @@ import 'package:eatery/ui/auth/otp_verify_view.dart';
 import 'package:eatery/ui/auth/password_reset_view.dart';
 import 'package:eatery/ui/auth/register_view.dart';
 import 'package:eatery/ui/auth/restuarant_profile_view.dart';
-import 'package:eatery/ui/home/index.dart';
+import 'package:eatery/index.dart';
 import 'package:eatery/ui/onboard/splash_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -90,7 +90,7 @@ final GoRouter router = GoRouter(
                             name: RoutesName.otp,
                             pageBuilder:
                                 (BuildContext context, GoRouterState state) {
-                                  final email = state.uri.queryParameters['email'];
+                              final email = state.uri.queryParameters['email'];
                               return CustomTransitionPage(
                                 key: state.pageKey,
                                 child: OptVerifyView(email: email!),

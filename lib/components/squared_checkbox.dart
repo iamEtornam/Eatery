@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
 class SquaredCheckbox extends StatefulWidget {
-  const SquaredCheckbox({Key? key, required this.isChecked, required this.onTap, this.size = 20, required this.activeColor})
-      : super(key: key);
+  const SquaredCheckbox(
+      {super.key,
+      required this.isChecked,
+      required this.onTap,
+      this.size = 20,
+      required this.activeColor});
 
   final bool isChecked;
   final Function(bool value) onTap;
@@ -30,7 +34,9 @@ class _SquaredCheckboxState extends State<SquaredCheckbox> {
         widget.onTap(isChecked!);
       },
       child: Material(
-        color: isChecked! ? widget.activeColor : Theme.of(context).scaffoldBackgroundColor,
+        color: isChecked!
+            ? widget.activeColor
+            : Theme.of(context).scaffoldBackgroundColor,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
             side: const BorderSide(color: Color.fromRGBO(200, 200, 200, 1))),

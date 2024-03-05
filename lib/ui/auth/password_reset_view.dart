@@ -125,7 +125,7 @@ class _PasswordResetFormWidgetState
                   if (formKey.currentState!.validate()) {
                     await authProvider.forgotPassword(
                         email: emailTextEditController.text);
-                    if (!mounted) return;
+                    if (!context.mounted) return;
 
                     showAlert(context,
                         message: authProvider.message!,
@@ -142,7 +142,6 @@ class _PasswordResetFormWidgetState
               const SizedBox(height: 20),
             ],
           )),
-    
     );
   }
 }

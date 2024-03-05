@@ -1,5 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
+
+extension ColorXs on Color {
+  ColorFilter get asSvgColor => ColorFilter.mode(this, BlendMode.srcIn);
+}
+
+void developerLog(dynamic message) {
+  log('$message', name: 'Developer');
+}
 
 enum ToastificationType {
   info,
@@ -20,8 +30,8 @@ showAlert(BuildContext context,
       color: Colors.white,
     ),
     autoCloseDuration: const Duration(seconds: 5),
-    title: title,
-    description: message,
+    title: Text(title),
+    description: Text(message),
     alignment: Alignment.topCenter,
     direction: TextDirection.ltr,
     animationDuration: const Duration(milliseconds: 300),
@@ -64,12 +74,13 @@ showAlert(BuildContext context,
     pauseOnHover: true,
     dragToClose: true,
     callbacks: ToastificationCallbacks(
-      onTap: (toastItem) => print('Toast ${toastItem.id} tapped'),
+      onTap: (toastItem) => developerLog('Toast ${toastItem.id} tapped'),
       onCloseButtonTap: (toastItem) =>
-          print('Toast ${toastItem.id} close button tapped'),
+          developerLog('Toast ${toastItem.id} close button tapped'),
       onAutoCompleteCompleted: (toastItem) =>
-          print('Toast ${toastItem.id} auto complete completed'),
-      onDismissed: (toastItem) => print('Toast ${toastItem.id} dismissed'),
+          developerLog('Toast ${toastItem.id} auto complete completed'),
+      onDismissed: (toastItem) =>
+          developerLog('Toast ${toastItem.id} dismissed'),
     ),
   );
 }

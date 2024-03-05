@@ -217,14 +217,14 @@ class _LoginFormWidgetState extends ConsumerState<LoginFormWidget> {
                     await authProvider.login(
                         email: emailTextEditController.text,
                         password: passwordTextEditController.text);
-                    if (!mounted) return;
+                    if (!context.mounted) return;
                     if (authProvider.user != null) {
                       showAlert(context,
                           message: authProvider.message!,
                           alertType: ToastificationType.success);
 
                       final restaurant = await authProvider.getRestaurant();
-                      if (!mounted) return;
+                      if (!context.mounted) return;
 
                       if (restaurant.isNotEmpty) {
                         context.goNamed(RoutesName.home);

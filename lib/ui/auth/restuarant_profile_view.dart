@@ -86,7 +86,8 @@ class _BasicInfoState extends ConsumerState<BasicInfo> {
   final formKey = GlobalKey<FormState>();
   final restaurantNameTextEditController = TextEditingController();
   final restaurantLocationTextEditController = TextEditingController();
-  final restaurantCoordinatesTextEditController = TextEditingController(text: '1233,1322');
+  final restaurantCoordinatesTextEditController =
+      TextEditingController(text: '1233,1322');
   XFile? imageFile;
   double latitude = 0.0;
   double longitude = 0.0;
@@ -190,7 +191,7 @@ class _BasicInfoState extends ConsumerState<BasicInfo> {
                           final xFile = await ImagePicker()
                               .pickImage(source: res, imageQuality: 60);
                           if (xFile == null) return;
-                          if (!mounted) return;
+                          if (!context.mounted) return;
 
                           setState(() {
                             imageFile = xFile;
@@ -202,7 +203,7 @@ class _BasicInfoState extends ConsumerState<BasicInfo> {
                             Vectors.camera,
                             width: 20,
                             height: 20,
-                            color: Colors.black,
+                            colorFilter: Colors.black.asSvgColor,
                           ),
                         ),
                       ),
@@ -240,7 +241,7 @@ class _BasicInfoState extends ConsumerState<BasicInfo> {
             const SizedBox(height: 10),
             InkWell(
               onTap: () async {
-                print('hello');
+                developerLog('hello');
                 try {
                   final location = Location();
 
@@ -264,7 +265,7 @@ class _BasicInfoState extends ConsumerState<BasicInfo> {
                   // }
 
                   final locationData = await location.getLocation();
-                  print(locationData.toString());
+                  developerLog(locationData.toString());
                   setState(() {
                     latitude = locationData.latitude!;
                     longitude = locationData.longitude!;
@@ -272,7 +273,7 @@ class _BasicInfoState extends ConsumerState<BasicInfo> {
                         '$latitude, $longitude';
                   });
                 } catch (e) {
-                  print(e.toString());
+                  developerLog(e.toString());
                 }
               },
               child: EateryTextField(
@@ -306,7 +307,7 @@ class _BasicInfoState extends ConsumerState<BasicInfo> {
                         latitude: latitude,
                         longitude: longitude
                       ));
-                  if (!mounted) return;
+                  if (!context.mounted) return;
                   if (saved) {
                     showAlert(context,
                         message: authProvider.message!,

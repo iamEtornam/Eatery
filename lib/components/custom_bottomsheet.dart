@@ -4,12 +4,12 @@ import 'package:flutter_svg/svg.dart';
 
 class CustomBottomsheet extends StatelessWidget {
   const CustomBottomsheet({
-    Key? key,
+    super.key,
     required this.child,
     this.onCloseAction,
     this.title,
     this.subtitle,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final VoidCallback? onCloseAction;
@@ -41,7 +41,8 @@ class CustomBottomsheet extends StatelessWidget {
                   const Spacer(),
                   if (onCloseAction != null) ...{
                     GestureDetector(
-                        onTap: onCloseAction, child: SvgPicture.asset(Vectors.backButtonCloseIcon))
+                        onTap: onCloseAction,
+                        child: SvgPicture.asset(Vectors.backButtonCloseIcon))
                   }
                 ],
               ),

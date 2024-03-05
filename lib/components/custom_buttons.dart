@@ -4,14 +4,14 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
-    Key? key,
+    super.key,
     this.onPressed,
     this.color,
     required this.label,
     this.disabled = false,
     this.textColor,
     this.showLoading = false,
-  }) : super(key: key);
+  });
 
   final VoidCallback? onPressed;
   final Color? color;
@@ -53,7 +53,9 @@ class PrimaryButton extends StatelessWidget {
               Text(
                 label,
                 style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                      color: disabled ? const Color(0xFFF5F5F5) : textColor ?? Colors.white,
+                      color: disabled
+                          ? const Color(0xFFF5F5F5)
+                          : textColor ?? Colors.white,
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
@@ -68,14 +70,14 @@ class PrimaryButton extends StatelessWidget {
 
 class SecondaryButton extends StatelessWidget {
   const SecondaryButton({
-    Key? key,
+    super.key,
     this.onPressed,
     this.color,
     required this.label,
     this.disabled = false,
     this.textColor,
     this.showLoading = false,
-  }) : super(key: key);
+  });
 
   final VoidCallback? onPressed;
   final Color? color;
@@ -94,7 +96,8 @@ class SecondaryButton extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(13),
-          color: disabled ? const Color(0xFFF5F5F5) : color ?? EateryColor.grey2,
+          color:
+              disabled ? const Color(0xFFF5F5F5) : color ?? EateryColor.grey2,
         ),
         child: Center(
           child: Row(
@@ -117,7 +120,9 @@ class SecondaryButton extends StatelessWidget {
               Text(
                 label,
                 style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                      color: disabled ? const Color(0xFFC8C8C8) : textColor ?? Colors.black,
+                      color: disabled
+                          ? const Color(0xFFC8C8C8)
+                          : textColor ?? Colors.black,
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
@@ -132,14 +137,13 @@ class SecondaryButton extends StatelessWidget {
 
 class EateryOutlinedButton extends StatelessWidget {
   const EateryOutlinedButton(
-      {Key? key,
+      {super.key,
       this.onPressed,
       this.color,
       required this.child,
       this.disabled = false,
       this.size = 40,
-      this.showOutline = true})
-      : super(key: key);
+      this.showOutline = true});
   final VoidCallback? onPressed;
   final Color? color;
   final Widget child;

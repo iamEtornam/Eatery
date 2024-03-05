@@ -133,7 +133,7 @@ class _OptVerifyFormWidgetState extends ConsumerState<OptVerifyFormWidget> {
                         email: widget.email,
                         otp: otpTextEditController.text.trim(),
                         type: OtpType.signup);
-                    if (!mounted) return;
+                    if (!context.mounted) return;
                     if (authProvider.user != null) {
                       showAlert(context,
                           message: authProvider.message!,

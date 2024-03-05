@@ -236,7 +236,7 @@ class _RegisterFormWidgetState extends ConsumerState<RegisterFormWidget> {
                     await authProvider.register(
                         email: emailTextEditController.text,
                         password: passwordTextEditController.text);
-                    if (!mounted) return;
+                    if (!context.mounted) return;
                     if (authProvider.user != null) {
                       showAlert(context,
                           message: authProvider.message!,
